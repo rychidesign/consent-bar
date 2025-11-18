@@ -1,42 +1,35 @@
 // Soubor: consent-booster.js
-// Verze: 1.0.8 (Nový klíč pro vynucení resetu souhlasů)
-// ÚPRAVY:
-// 1. localStorageKey: 'consentBooster_userConsent_v1.0.8' pro zneplatnění starých souhlasů.
-// 2. data-cb-consent-max-age-days default/hodnota: 10 dní.
-// 3. data-cb-rejection-refresh-days default/hodnota: 100 dní.
+// Verze: 1.0.8 (Opravená logika pro parseFloat)
+// ÚPRAVA: Použit parseFloat místo parseInt pro správnou interpretaci desetinných čísel v data-cb-*-days.
 (function(window, document) {
     'use strict';
 
     const SCRIPT_TAG = document.currentScript;
     const MS_IN_DAY = 1000 * 60 * 60 * 24;
-    const DEFAULT_REJECTION_DAYS = 182; // Původní default pro případ prázdného řetězce
-    const DEFAULT_MAX_AGE_DAYS = 365; // Původní default pro případ chybějícího atributu
+    const DEFAULT_REJECTION_DAYS = 182; 
+    const DEFAULT_MAX_AGE_DAYS = 365; 
 
-    // --- LOGIKA PRO data-cb-consent-max-age-days (Max. Platnost) ---
-    // Nastavíme defaultní hodnotu 10 dní, pokud není nastaveno jinak v HTML.
+    // --- LOGIKA PRO data-cb-consent-max-age-days ---
     const MAX_AGE_ATTRIBUTE = SCRIPT_TAG ? SCRIPT_TAG.getAttribute('data-cb-consent-max-age-days') : '10'; 
     let MAX_AGE_MS;
 
     if (MAX_AGE_ATTRIBUTE === "") {
-        // Prázdný řetězec "" znamená navždy (Infinity)
         MAX_AGE_MS = Infinity; 
     } else {
-        const days = parseInt(MAX_AGE_ATTRIBUTE || DEFAULT_MAX_AGE_DAYS, 10);
-        // Pokud je zadaná hodnota neplatná, použije se 365 dní
+        // ZMĚNA: Použití parseFloat pro desetinné hodnoty
+        const days = parseFloat(MAX_AGE_ATTRIBUTE || DEFAULT_MAX_AGE_DAYS);
         MAX_AGE_MS = isNaN(days) ? (DEFAULT_MAX_AGE_DAYS * MS_IN_DAY) : (days * MS_IN_DAY);
     }
     
-    // --- LOGIKA PRO data-cb-rejection-refresh-days (Refresh po odmítnutí) ---
-    // Nastavíme defaultní hodnotu 100 dní, pokud není nastaveno jinak v HTML.
+    // --- LOGIKA PRO data-cb-rejection-refresh-days ---
     const REFRESH_REJECT_ATTRIBUTE = SCRIPT_TAG ? SCRIPT_TAG.getAttribute('data-cb-rejection-refresh-days') : '100'; 
     let REFRESH_REJECT_DAYS;
 
     if (REFRESH_REJECT_ATTRIBUTE === "") {
-        // Prázdný řetězec "" nastaví defaultní hodnotu 182 dní
         REFRESH_REJECT_DAYS = DEFAULT_REJECTION_DAYS;
     } else {
-        const days = parseInt(REFRESH_REJECT_ATTRIBUTE || DEFAULT_REJECTION_DAYS, 10);
-        // Pokud je zadaná hodnota neplatná, použije se 182 dní
+        // ZMĚNA: Použití parseFloat pro desetinné hodnoty
+        const days = parseFloat(REFRESH_REJECT_ATTRIBUTE || DEFAULT_REJECTION_DAYS);
         REFRESH_REJECT_DAYS = isNaN(days) ? DEFAULT_REJECTION_DAYS : days;
     }
     // ----------------------------------------------------------------------
@@ -46,7 +39,6 @@
         ga4Id: SCRIPT_TAG ? SCRIPT_TAG.getAttribute('data-cb-ga4-id') : null,
         waitForUpdate: parseInt(SCRIPT_TAG ? SCRIPT_TAG.getAttribute('data-cb-wait-for-update') : '500', 10),
         devMode: (SCRIPT_TAG ? SCRIPT_TAG.getAttribute('data-cb-dev-mode') : 'false') === 'true',
-        // ZMĚNA: NOVÝ KLÍČ PRO RESET STARÝCH SOUHLASŮ
         localStorageKey: 'consentBooster_userConsent_v1.0.8', 
         updateDefaultStateFromStorage: (SCRIPT_TAG ? SCRIPT_TAG.getAttribute('data-cb-default-state-updated') : 'false') === 'true',
         forceManagePlainScripts: (SCRIPT_TAG ? SCRIPT_TAG.getAttribute('data-cb-force-manage-plain-scripts') : 'false') === 'true',
