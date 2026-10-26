@@ -1,9 +1,9 @@
-// Soubor: consent-booster.js — KOPIE PRO ODPREZENTUJ.CZ
+// Soubor: consent-booster.js
 // Vychází z rychidesign/consent-bar@8a7050d cb_main_10.js (v1.0.8). Originál zůstává beze
 // změny, používají ho další weby.
-// ÚPRAVA (odprezentuj, 2026-10): volitelný atribut data-cb-cookie-domain="odprezentuj.cz".
+// ÚPRAVA (2026-10): volitelný atribut data-cb-cookie-domain="example.cz".
 //   Souhlas se kromě localStorage ukládá i do cookie platné pro doménu a všechny její
-//   subdomény, takže www.odprezentuj.cz i blog.odprezentuj.cz vidí stejný souhlas a GA4
+//   subdomény, takže www.example.cz i blog.example.cz vidí stejný souhlas a GA4
 //   sdílí _ga. Cookie má přednost před localStorage. Na jiném hostu (webflow.io, staging)
 //   se cookie nepíše a lišta se chová jako originál. Bez atributu = beze změny.
 // Verze: 1.0.8 (Opravená logika pro parseFloat)
