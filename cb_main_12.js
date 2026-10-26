@@ -41,8 +41,8 @@
     }
     // ----------------------------------------------------------------------
 
-    // --- LOGIKA PRO data-cb-cookie-domain (odprezentuj) ---
-    // "odprezentuj.cz" i ".odprezentuj.cz" znamená totéž: doména + všechny subdomény.
+    // --- LOGIKA PRO data-cb-cookie-domain ---
+    // "example.cz" i ".example.cz" znamená totéž: doména + všechny subdomény.
     // Použije se jen tam, kde stránka na té doméně opravdu běží; jinde by prohlížeč
     // cookie stejně zahodil.
     const COOKIE_DOMAIN_ATTRIBUTE = SCRIPT_TAG ? (SCRIPT_TAG.getAttribute('data-cb-cookie-domain') || '') : '';
@@ -225,7 +225,7 @@
             return null;
         }
 
-        // --- Sdílení souhlasu přes cookie (odprezentuj) ---
+        // --- Sdílení souhlasu přes cookie ---
         _readCookie() {
             if (!this.config.cookieDomain) return null;
             const prefix = this.config.cookieName + '=';
